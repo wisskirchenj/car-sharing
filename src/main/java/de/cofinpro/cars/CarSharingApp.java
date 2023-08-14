@@ -1,7 +1,10 @@
 package de.cofinpro.cars;
 
+import de.cofinpro.cars.controller.MenuRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.util.Assert;
 
 import java.util.Properties;
@@ -19,4 +22,10 @@ public class CarSharingApp {
         app.setDefaultProperties(properties);
         app.run(args);
     }
+
+    @Bean
+    CommandLineRunner commandLineRunner(MenuRunner menuRunner) {
+        return args -> menuRunner.run();
+    }
+
 }

@@ -33,3 +33,6 @@ Sources for all project tasks (4 stages) with tests and configurations.
 10.08.23 Stage 1 completed. Just the creation of an H2-file database with a company table. Modelled with JPA entity and 
 JPARepository and have Spring JPA to the DDL-creation. Take database-filename from program arguments and programatically
 set the `spring.datasource.url` property before running the `SpringApplication`.
+
+14.08.23 Stage 2 completed. Have command line menus provided as Spring beans (`@Controller`) and have a stdin-scanner 
+provided as bean. The CommandLineRunner uses a service to connect (query / insert) with the database vie the JPA-repository.

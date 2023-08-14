@@ -24,6 +24,6 @@ public class Company {
     @Column(name = "ID", columnDefinition = "INT")
     private int id;
 
-    @Column(name = "NAME", columnDefinition = "VARCHAR_IGNORECASE(255)")
+    @Column(name = "NAME", columnDefinition = "VARCHAR_IGNORECASE(255) UNIQUE NOT NULL")
     private String name;
 }
