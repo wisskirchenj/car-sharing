@@ -11,7 +11,7 @@ Project goal is to do another Spring Boot JPA project - here with Command Line a
 - Lombok
 - Slf4j
 - Tests with Junit-Jupiter and Mockito
-- Gradle 8.2.1
+- Gradle 8.3
 
 ## Program description
 
