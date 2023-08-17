@@ -7,7 +7,7 @@ Project goal is to do another Spring Boot JPA project - here with Command Line a
 ## Technology / External Libraries
 
 - Java 20
-- Spring Boot / JPA
+- Spring Boot CommandLineRunner / JPA
 - Lombok
 - Slf4j
 - Tests with Junit-Jupiter and Mockito
