@@ -1,44 +1,25 @@
 package de.cofinpro.cars.controller;
 
 import de.cofinpro.cars.io.ConsolePrinter;
-import de.cofinpro.cars.persistence.Company;
 import de.cofinpro.cars.service.CompanyService;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 @Controller
-public class ManagerMenu {
+public class ManagerMenu extends AbstractMenuController<ManagerMenu.Choice> {
 
-    private final CompanyService companyService;
     private final CompanyMenu companyMenu;
-    private final ConsolePrinter printer;
-    private final Scanner scanner;
+    private final CompanyService companyService;
 
-    public ManagerMenu(CompanyService companyService,
+    public ManagerMenu(ConsolePrinter printer,
+                       Scanner scanner,
                        CompanyMenu companyMenu,
-                       ConsolePrinter printer,
-                       Scanner scanner) {
+                       CompanyService companyService) {
+        super(printer, scanner);
         this.companyService = companyService;
         this.companyMenu = companyMenu;
-        this.printer = printer;
-        this.scanner = scanner;
-    }
-
-    public void run() {
-        printMenu();
-        var choice = Integer.parseInt(scanner.nextLine());
-        while (choice != 0) {
-            switch (choice) {
-                case 1 -> listCompanies();
-                case 2 -> createCompany();
-                default -> throw new IllegalStateException("invalid choice");
-            }
-            printMenu();
-            choice = Integer.parseInt(scanner.nextLine());
-        }
     }
 
     private void createCompany() {
@@ -49,34 +30,40 @@ public class ManagerMenu {
     }
 
     private void listCompanies() {
-        var companies = companyService.listCompanies();
-        if (companies.isEmpty()) {
-            printer.printInfo("The company list is empty!");
-            printer.printInfo("");
-            return;
-        }
-        printCompaniesMenu(companies);
-        var choice = Integer.parseInt(scanner.nextLine());
+        var companies = companyService.getCompanies();
+        var choice = chooseFromList(companies, "company");
         if (choice > 0) {
-            Assert.state(choice <= companies.size(), "Invalid choice.");
             var selected = companies.get(choice - 1);
-            printer.printInfo("'%s' company".formatted(selected.getName()));
+            printer.printInfo("\n'{}' company", selected.getName());
             companyMenu.setCompany(selected);
             companyMenu.run();
         }
     }
 
-    private void printCompaniesMenu(List<Company> companies) {
-        printer.printInfo("Choose a company:");
-        printer.printCompanyList(companies);
-        printer.printInfo("0. Back\n");
+    @Override
+    protected Runnable getMenuAction(Choice choice) {
+        return Map.<Choice, Runnable>of(
+                Choice.COMPANY_MENU, this::listCompanies,
+                Choice.CREATE_COMPANY, this::createCompany
+        ).get(choice);
     }
 
-    private void printMenu() {
-        printer.printInfo("""
+    @Override
+    protected Choice getExitChoice() {
+        return Choice.EXIT;
+    }
+
+    @Override
+    protected String getMenuText() {
+        return """
                 1. Company list
                 2. Create a company
-                0. Back
-                """);
+                0. Back""";
+    }
+
+    protected enum Choice {
+        EXIT,
+        COMPANY_MENU,
+        CREATE_COMPANY
     }
 }

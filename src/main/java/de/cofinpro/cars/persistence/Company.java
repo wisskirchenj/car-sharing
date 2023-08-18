@@ -1,5 +1,6 @@
 package de.cofinpro.cars.persistence;
 
+import de.cofinpro.cars.io.NamedItem;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Entity
 @Table(name = "COMPANY")
-public class Company {
+public class Company implements NamedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

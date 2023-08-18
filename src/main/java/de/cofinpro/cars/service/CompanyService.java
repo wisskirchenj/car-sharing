@@ -16,7 +16,7 @@ public class CompanyService {
         this.repository = repository;
     }
 
-    public List<Company> listCompanies() {
+    public List<Company> getCompanies() {
         return repository.findAll(Sort.by(Sort.Order.asc("id")));
     }
 

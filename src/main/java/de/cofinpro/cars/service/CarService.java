@@ -17,8 +17,12 @@ public class CarService {
         this.repository = carRepository;
     }
 
-    public List<Car> listCars(int companyId) {
+    public List<Car> getCars(int companyId) {
         return repository.findAllByCompanyId(companyId, Sort.by(Sort.Order.asc("id")));
+    }
+
+    public List<Car> getAvailableCars(int companyId) {
+        return repository.findAvailableByCompanyId(companyId, Sort.by(Sort.Order.asc("id")));
     }
 
     public void createCar(String name, Company company) {

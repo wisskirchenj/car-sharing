@@ -6,37 +6,42 @@ import de.cofinpro.cars.service.CarService;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
 
+import java.util.Map;
 import java.util.Scanner;
 
 @Controller
-public class CompanyMenu {
+public class CompanyMenu extends AbstractMenuController<CompanyMenu.Choice> {
 
     private final CarService carService;
-    private final Scanner scanner;
-    private final ConsolePrinter printer;
     @Setter
     private Company company;
 
-    public CompanyMenu(CarService carService,
-                       Scanner scanner, 
-                       ConsolePrinter printer) {
+    public CompanyMenu(Scanner scanner,
+                       ConsolePrinter printer,
+                       CarService carService) {
+        super(printer, scanner);
         this.carService = carService;
-        this.scanner = scanner;
-        this.printer = printer;
     }
 
-    public void run() {
-        printMenu();
-        var choice = Integer.parseInt(scanner.nextLine());
-        while (choice != 0) {
-            switch (choice) {
-                case 1 -> listCars();
-                case 2 -> createCar();
-                default -> throw new IllegalStateException("invalid choice");
-            }
-            printMenu();
-            choice = Integer.parseInt(scanner.nextLine());
-        }
+    @Override
+    protected String getMenuText() {
+        return """
+                1. Car list
+                2. Create a car
+                0. Back""";
+    }
+
+    @Override
+    protected Runnable getMenuAction(Choice choice) {
+        return Map.<Choice, Runnable>of(
+                Choice.LIST_CARS, this::listCars,
+                Choice.CREATE_CAR, this::createCar
+        ).get(choice);
+    }
+
+    @Override
+    protected Choice getExitChoice() {
+        return Choice.EXIT;
     }
 
     private void createCar() {
@@ -47,15 +52,14 @@ public class CompanyMenu {
     }
 
     private void listCars() {
-        var cars = carService.listCars(company.getId());
+        var cars = carService.getCars(company.getId());
         printer.printCarList(cars);
+        printer.printInfo("");
     }
 
-    private void printMenu() {
-        printer.printInfo("""
-                1. Car list
-                2. Create a car
-                0. Back
-                """);
+    protected enum Choice {
+        EXIT,
+        LIST_CARS,
+        CREATE_CAR
     }
 }

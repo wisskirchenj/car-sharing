@@ -20,7 +20,7 @@ rent out their cars and find customers.
 
 ## Project completion
 
-[//]: # (Project was completed on 14.05.23.)
+Project was completed on 18.08.23.
 
 ## Repository Contents
 
@@ -39,3 +39,7 @@ provided as bean. The CommandLineRunner uses a service to connect (query / inser
 
 17.08.23 Stage 3 completed. Add second entity `Car` with JPA-Repository and Service, connect it via `@ManyToOne` and
 `@JoinColumn` to the `Company`-table to generate a foreign key. Expand the menu structure (a bit weird requirements).
+
+17.08.23 Final Stage 4 completed. Third entity `Customer` was needed, that got its repository and service too. It has a 
+nullable `@OneToOne` connection to the `Car` entity. Used generic AbstractMenuController to reduce menu flow
+complexity. Also a JQL-`@Query` with `LEFT JOIN` was needed to query available cars without altering the tables. 

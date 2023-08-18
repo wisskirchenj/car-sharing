@@ -1,7 +1,5 @@
 package de.cofinpro.cars.io;
 
-import de.cofinpro.cars.persistence.Car;
-import de.cofinpro.cars.persistence.Company;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,23 +12,21 @@ import java.util.List;
 @Component
 public class ConsolePrinter {
 
-    public void printInfo(String message) {
-        log.info(message);
+    public void printInfo(String message, Object... arguments) {
+        log.info(message, arguments);
     }
 
-    public void printCompanyList(List<Company> companies) {
-        companies.forEach(company -> printInfo("%d. %s %s".formatted(company.getId(), company.getName(),
-                company.hashCode())));
-    }
-
-    public void printCarList(List<Car> cars) {
+    public void printCarList(List<? extends NamedItem> cars) {
         if (cars.isEmpty()) {
             printInfo("The car list is empty!");
             return;
         }
-        for (int i = 0; i < cars.size(); i++) {
-            printInfo("%d. %s %s".formatted(i + 1, cars.get(i).getName(), cars.get(i).getCompany().hashCode()));
+        printEnumeratedList(cars);
+    }
+
+    public void printEnumeratedList(List<? extends NamedItem> items) {
+        for (int i = 0; i < items.size(); i++) {
+            printInfo("{}. {}", i + 1, items.get(i).getName());
         }
-        printInfo("");
     }
 }
