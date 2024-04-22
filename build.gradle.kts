@@ -1,7 +1,7 @@
 plugins {
     application
-    id("org.springframework.boot") version "3.1.2"
-    id("io.spring.dependency-management") version "1.1.2"
+    id("org.springframework.boot") version "3.2.4"
+    id("io.spring.dependency-management") version "1.1.4"
 }
 
 application {
@@ -9,7 +9,7 @@ application {
 }
 
 java.toolchain {
-    languageVersion.set(JavaLanguageVersion.of(20))
+    languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 configurations["compileOnly"]

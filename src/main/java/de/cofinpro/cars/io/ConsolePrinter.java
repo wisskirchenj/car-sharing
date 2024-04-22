@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Slf4J wrapping printer class, accepting input to print to the console (stdout)
@@ -25,8 +26,7 @@ public class ConsolePrinter {
     }
 
     public void printEnumeratedList(List<? extends NamedItem> items) {
-        for (int i = 0; i < items.size(); i++) {
-            printInfo("{}. {}", i + 1, items.get(i).getName());
-        }
+        IntStream.range(0, items.size())
+                .forEach( i -> printInfo("{}. {}", i + 1, items.get(i).getName()));
     }
 }
